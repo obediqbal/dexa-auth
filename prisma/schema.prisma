@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id          String   @id @default(uuid())
+  staffId     String   @unique @map("staff_id")    // UUID from Staff microservice
+  employeeId  String   @map("employee_id")          // employee identifier (e.g., "EMP001")
+  email       String   @unique
+  password    String
+  name        String
+  role        Role     @default(STAFF)
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+enum Role {
+  STAFF
+  ADMIN
+}
